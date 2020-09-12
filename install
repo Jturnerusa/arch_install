@@ -1,0 +1,29 @@
+root=""
+boot=""
+cryptkey="/tmp/keyfile"
+mirror="Server = http://192.168.254.21:8080"
+
+timedatectl set-timezone EST
+timedatectl set-ntp true
+echo $mirror > /etc/pacman.d/mirrorlist
+touch $cryptkey
+chmod 000 $cryptkey
+head -c 8192 /dev/random > $cryptkey
+cryptsetup luksFormat -d $cryptkey $root
+cryptsetup open --type luks -d $cryptkey $root cryptroot
+mkfs.ext4 /dev/mapper/cryptroot
+mkfs.ext4 $boot
+mount /dev/mapper/cryptroot /mnt
+mkdir /mnt/boot
+mount $boot /mnt/boot
+pacstrap /mnt
+genfstab -U /mnt > /mnt/etc/fstab
+cp $cryptkey /mnt/boot/keyfile
+shred $cryptkey
+rm $cryptkey
+cp -r install2 config/ /mnt/
+arch-chroot /mnt/ /bin/bash /install2
+rm /mnt/install2 /mnt/config -rf
+umount /mnt -R
+cryptsetup close cryptroot
+
