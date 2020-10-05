@@ -17,7 +17,7 @@ GRUB_DEFAULT=0
 GRUB_TIMEOUT=0
 GRUB_DISTRIBUTOR=\"Arch\"
 GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=4 quiet systemd.unified_cgroup_hierarchy=1\"
-GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$root_uuid:cryptroot allow-discards cryptkey=UUID=$boot_uuid:ext4:/keyfile\"
+GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$root_uuid:cryptroot:allow-discards cryptkey=UUID=$boot_uuid:ext4:/keyfile\"
 GRUB_PRELOAD_MODULES=\"part_gpt part_msdos\"
 GRUB_TIMEOUT_STYLE=menu
 GRUB_TERMINAL_INPUT=console
